@@ -8,30 +8,32 @@ import userRouter from "./routes/userRoute.js";
 import cartRouter from "./routes/cardRoute.js";
 import orderRouter from "./routes/orderRoute.js";
 
-
 const app = express();
-const port = 4000;
 
-// middleware
+// Middleware
 app.use(express.json());
 app.use(cors());
 
-// db connection
+// Database connection
 connectDB();
 
-// api endpoints
+// API Endpoints
 app.use("/api/food", foodRouter);
-app.use("/images", express.static("uploads"));
+app.use("/images", express.static("uploads")); // Serving static files
 app.use("/api/user", userRouter);
 app.use("/api/cart", cartRouter);
-app.use("/api/order",  orderRouter);
+app.use("/api/order", orderRouter);
 
-
-app.get("/", (request, response) => {
-  response.send("API Working"); 
+// Root route
+app.get("/", (req, res) => {
+  res.send("API is working");
 });
 
+// Listen to the port provided by Vercel (or fallback to 4000 for local development)
+const port = process.env.PORT || 4000;
 app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+  console.log(`Server running on port http://localhost:${port}`);
 });
-// mongodb+srv://sakethsampath2006:7093023759@cluster0.2j1tb.mongodb.net/?
+
+// Export the app for serverless deployment compatibility
+export default app;
